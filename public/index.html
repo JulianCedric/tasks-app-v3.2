@@ -5,9 +5,9 @@
   </head>
   <body>
     <div class="container-fluid" style="margin: 2rem">
-      <div class="row" id="login-form" style="display: block">
+      <div class="row" id="login-form-container" style="display: block">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form>
+          <form id="login-form">
             <h2>Log in</h2>
             <div class="form-group">
               <input class="form-control" id="username" type="text" placeholder="Username" required>
@@ -17,11 +17,11 @@
             </div>
             <button class="btn btn-block btn-primary" type="submit">Log in</button>
             <hr>
-            <h4>Don't have an account? <a href="#">Sign up</a></h4>
+            <h4>Don't have an account? <a href="#" id="signup-link">Sign up</a></h4>
           </form>
         </div>
       </div>
-      <div class="row" id="signup-form-container" style="display: block">
+      <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
           <form id="signup-form">
             <h2>Sign up</h2>
@@ -40,11 +40,11 @@
             <div class="form-group">
               <input class="form-control" id="password" type="password" placeholder="Password" required>
             </div>
-            <button class="btn btn-block btn-primary" type="submit">Sign Up</button>
+            <button class="btn btn-block btn-primary" id="signup-btn" type="submit">Sign Up</button>
           </form>
         </div>
       </div>
-      <div class="row" id="new-task-form" style="display: block">
+      <div class="row" id="new-task-form" style="display: none">
         <div class="col-md-offset-4 col-md-4">
           <form>
             <h2 class="text-center">Tasks</h2>
@@ -68,6 +68,7 @@
     <script>
       let users = [{ id: 1, username: 'user1', password: 'pass1' }];
       let tasks = [];
+     
       document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -91,6 +92,13 @@
           };
         };
       });
+     
+      document.getElementById('signup-link').addEventListener('click', function(e) {
+        console.log("user clicked signup-link");
+        document.getElementById('login-form-container').style.display = 'none';
+        document.getElementById('signup-form-container').style.display = 'block';
+      });
+     
       document.getElementById('new-task-form').addEventListener('submit', function(e) {
         e.preventDefault();
         // console.log('e:', e);
