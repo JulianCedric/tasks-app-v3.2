@@ -1,78 +1,125 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
   </head>
   <body>
-    <div class='container-fluid' style="margin-top: 2rem">
-      <!--  -->
-      <nav>
-        <div>
-          <a href="#login-container">Login
-          </a>
-        </div>
-      </nav>
-      <div id="tasks-container" class='row'>
-        <div class='col-md-offset-4 col-md-4 well'>
-          <h2 class='text-center'>Tasks</h2>
-          <form id='new-task-form'>
-            <div class='form-group'>
-              <input class='form-control' id='new-task' placeholder='New task' required>
+    <div class="container-fluid" style="margin: 2rem">
+      <div class="row" id="login-form" style="display: block">
+        <div class="col-md-offset-4 col-md-4 text-center well">
+          <form>
+            <h2>Log in</h2>
+            <div class="form-group">
+              <input class="form-control" id="username" type="text" placeholder="Username" required>
             </div>
-            <div class='form-group'>
-              <button class='btn btn-block btn-primary' id='submit-btn' type='submit'>Submit</button>
+            <div class="form-group">
+              <input class="form-control" id="password" type="password" placeholder="Password" required>
             </div>
+            <button class="btn btn-block btn-primary" type="submit">Log in</button>
+            <hr>
+            <h4>Don't have an account? <a href="#">Sign up</a></h4>
           </form>
         </div>
       </div>
-      <!--  -->
-      <div class='row'>
-        <div class="col-md-offset-4 col-md-4 well">
-          <h4>Unsorted:</h4>
-          <div class="'well">
-            <ol id="unsorted-tasks-ol"></ol>
+      <div class="row" id="signup-form-container" style="display: block">
+        <div class="col-md-offset-4 col-md-4 text-center well">
+          <form id="signup-form">
+            <h2>Sign up</h2>
+            <div class="form-group">
+              <input class="form-control" id="email" type="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="first-name" type="text" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="last-name" type="text" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="username" type="text" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="password" type="password" placeholder="Password" required>
+            </div>
+            <button class="btn btn-block btn-primary" type="submit">Sign Up</button>
+          </form>
+        </div>
+      </div>
+      <div class="row" id="new-task-form" style="display: block">
+        <div class="col-md-offset-4 col-md-4">
+          <form>
+            <h2 class="text-center">Tasks</h2>
+            <div class="form-group">
+              <input class="form-control" id="new-task" placeholder="New task" required>
+            </div>
+            <button class="btn btn-block btn-primary">Submit</button>
+          </form>
+          <hr>
+          <div>
+            <ol id="tasks-ol">
+              <div>
+                <input id="task-checkbox" type="checkbox" style="text-decoration: none">
+                <label id="task-text" for="task-checkbox"> Drink liquor</label>
+              </div>
+            </ol>
           </div>
         </div>
       </div>
-      <!--  -->
-      <div id="login-container" class='row'>
-        <div class='col-md-offset-4 col-md-4 well'>
-          <h2 class='text-center'>Login</h2>
-          <form id='new-task-form'>
-            <div class='form-group'>
-              <input class='form-control' id='new-task' placeholder='New task' required>
-            </div>
-            <div class='form-group'>
-              <button class='btn btn-block btn-primary' id='submit-btn' type='submit'>Submit</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div id="signup-container" class="row">
-        <div class="col-md-offset-4 col-md-4 well">
-          
-        </div>
-      </div>
+    </div>
     <script>
+      let users = [{ id: 1, username: 'user1', password: 'pass1' }];
       let tasks = [];
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].username == username && users[i].password == password) {
+            console.log('user logged in');
+
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('new-task-form').style.display = 'block';
+            document.getElementById('new-task').focus();
+
+          } else {
+            alert('The username or password you entered is incorrect. Please try again.');
+            
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('username').focus();
+          };
+        };
+      });
       document.getElementById('new-task-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+        // console.log('e:', e);
+        // console.log('e.target.name:', e.target.name);
+
+        let newId = tasks.length + 1;
         let newTask = document.getElementById('new-task').value;
-        let unsortedTasksOl = document.getElementById('unsorted-tasks-ol');
+        let newObj = { id: newId, desc: newTask};
+        tasks.push(newObj);
+        console.log('tasks:', tasks);
+
+        let tasksOl = document.getElementById('tasks-ol');
         let newTaskLi = document.createElement('li');
-        let newObj = { id: tasks.length, desc: newTask };
-        
-        tasks.push(newObj); 
-
         newTaskLi.innerText = newTask;
-        unsortedTasksOl.appendChild(newTaskLi);
-
+        tasksOl.appendChild(newTaskLi);
         document.getElementById('new-task').value = '';
-        document.getElementById('new-task').focus();
+        document.getElementById('username').focus();
+        console.log('user added new task');
+      });
 
-        console.log('success');
+      document.getElementById('task-checkbox').addEventListener('click', function(e) {
+        console.log('checked');
+        console.log('e:', e);
+
+        if (e.target.checked) {
+          document.getElementById('task-text').style.textDecoration = 'line-through';
+        } else {
+          document.getElementById('task-text').style.textDecoration = 'none';
+        };
       });
     </script>
   </body>
